@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,7 +67,12 @@ public class EmployeesController {
 		ErrorDataResult<Object> errors = new ErrorDataResult<Object>(validationErrors, "Validation errors");
 		return errors;
 		
-	}						 
+	}			
+	
+	@DeleteMapping("/{id}")
+	public void deleteOneEmployee(@PathVariable int id) {
+		this.employeeService.deleteOneEmployee(id);
+	}
 	
 	@GetMapping("/getbyemail")
 	public DataResult<Employee> getByEmail(@RequestParam String email) {

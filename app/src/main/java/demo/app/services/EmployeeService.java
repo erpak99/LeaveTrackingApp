@@ -60,6 +60,10 @@ public class EmployeeService {
 		}
 	}
 	
+	public void deleteOneEmployee(int id) {
+		this.employeeRepository.deleteById(id);
+	}
+	
 	public DataResult<Employee> getByEmail(String email) {
 		return new SuccessDataResult<Employee>(this.employeeRepository.getByEmail(email),"Employee was shown with e-mail address");
 	}
@@ -101,5 +105,6 @@ public class EmployeeService {
 	public DataResult<List<EmployeeWithSupervisorDto>> getEmployeeWithSupervisorDetails() {
 		return new SuccessDataResult<List<EmployeeWithSupervisorDto>>(this.employeeRepository.getEmployeeWithSupervisorDetails(), "Id and email of employees and info of supervisors");
 	}
+
 
 }

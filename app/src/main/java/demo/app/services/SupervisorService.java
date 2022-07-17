@@ -57,6 +57,10 @@ public class SupervisorService {
 			return new SuccessResult("Supervisor is added successfully");
 		}
 	}
+
+	public void deleteOneSupervisor(int supervisorId) {
+		this.supervisorRepository.deleteById(supervisorId);
+	}
 	
 	
 	
