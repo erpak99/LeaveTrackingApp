@@ -38,6 +38,10 @@ public class EmployeeService {
 		else 
 			return new SuccessResult();
 	}
+	
+	public Employee getEmployeeByEmail(String email) {
+		return this.employeeRepository.findByEmail(email);
+	}
 
 	public DataResult<List<Employee>> getAllEmployees() {
 		return new SuccessDataResult<List<Employee>>(this.employeeRepository.findAll(), "All employees are shown");
@@ -59,6 +63,7 @@ public class EmployeeService {
 			return new SuccessResult("Employee is added successfully");
 		}
 	}
+
 	
 	public void deleteOneEmployee(int id) {
 		this.employeeRepository.deleteById(id);
@@ -105,6 +110,5 @@ public class EmployeeService {
 	public DataResult<List<EmployeeWithSupervisorDto>> getEmployeeWithSupervisorDetails() {
 		return new SuccessDataResult<List<EmployeeWithSupervisorDto>>(this.employeeRepository.getEmployeeWithSupervisorDetails(), "Id and email of employees and info of supervisors");
 	}
-
 
 }

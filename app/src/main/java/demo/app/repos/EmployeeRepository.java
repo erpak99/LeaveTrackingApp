@@ -13,7 +13,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>  {
 	Employee findByEmail(String email);
 	
 	Employee getByEmail(String email);
-	
+		
 	List<Employee> getByFirstNameAndSupervisor_SupervisorId(String firstName, int supervisorId);
 	
 	List<Employee> getBySupervisor_SupervisorIdIn(List<Integer> supervisors);

@@ -1,8 +1,7 @@
 package demo.app.core.status;
 
-public enum LeaveStatus {
-	
+public enum LeaveStatus {	
+	PENDING,
 	APPROVE,
-	REJECT,
-	PENDING;		
+	REJECT;		
 }

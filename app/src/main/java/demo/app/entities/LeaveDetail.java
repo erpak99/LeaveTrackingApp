@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import demo.app.core.status.LeaveStatus;
 
 @Entity
 @Table(name = "leavedetails")
@@ -33,9 +36,13 @@ public class LeaveDetail {
 	private float leaveDuration;
 	
 	@Column(name = "leave_description")
-	private String leaveDecsription;
+	private String leaveDescription;
 	
-	@ManyToOne(fetch = FetchType.EAGER ,cascade = CascadeType.ALL)
+	@Enumerated(EnumType.STRING)
+	@Column(name = "leave_status")
+	private LeaveStatus leaveStatus;
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "employee_id")
 	private Employee employee;
 	
@@ -43,14 +50,16 @@ public class LeaveDetail {
 		
 	}
 
-	public LeaveDetail(int leaveId, Date startDate, Date endDate, float leaveDuration, String leaveDecsription,
-			Employee employee) {
+	public LeaveDetail(int leaveId, Date startDate, Date endDate,
+					   float leaveDuration, String leaveDescription,
+					   LeaveStatus leaveStatus, Employee employee) {
 		super();
 		this.leaveId = leaveId;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.leaveDuration = leaveDuration;
-		this.leaveDecsription = leaveDecsription;
+		this.leaveDescription = leaveDescription;
+		this.leaveStatus = leaveStatus;
 		this.employee = employee;
 	}
 
@@ -86,12 +95,20 @@ public class LeaveDetail {
 		this.leaveDuration = leaveDuration;
 	}
 
-	public String getLeaveDecsription() {
-		return leaveDecsription;
+	public String getLeaveDescription() {
+		return leaveDescription;
 	}
 
-	public void setLeaveDecsription(String leaveDecsription) {
-		this.leaveDecsription = leaveDecsription;
+	public void setLeaveDescription(String leaveDescription) {
+		this.leaveDescription = leaveDescription;
+	}
+
+	public LeaveStatus getLeaveStatus() {
+		return leaveStatus;
+	}
+
+	public void setLeaveStatus(LeaveStatus leaveStatus) {
+		this.leaveStatus = leaveStatus;
 	}
 
 	public Employee getEmployee() {
@@ -101,7 +118,5 @@ public class LeaveDetail {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
-
-	
 	
 }

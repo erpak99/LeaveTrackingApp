@@ -3,6 +3,7 @@ package demo.app.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,7 +56,6 @@ public class EmployeesController {
 	public ResponseEntity<?> createOneEmployee(@Valid @RequestBody Employee employee) {
 		return ResponseEntity.ok(this.employeeService.createOneEmployee(employee));
 	}
-
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)	// validation hatalarini kontrol eder
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

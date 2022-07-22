@@ -56,7 +56,7 @@ public class Supervisor {
 	@Column(name = "supervisor_phonenumber")
 	private String phoneNumber;
 
-	@OneToMany(mappedBy = "supervisor")
+	@OneToMany(mappedBy = "supervisor",fetch = FetchType.EAGER)
 	private List<Employee> employees;
 
 	public Supervisor() {

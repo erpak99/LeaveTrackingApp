@@ -2,15 +2,13 @@ package demo.app.entities.dtos;
 
 public class EmployeeWithSupervisorDto {
 
-	private int id;
-	
-	private String email;
-	
+	private int id;	
+	private String email;	
 	private String firstName;
-
 	private String lastName;
 	
 	public EmployeeWithSupervisorDto() {
+	
 	}
 	
 	public EmployeeWithSupervisorDto(int id, String email, String firstName, String lastName) {
