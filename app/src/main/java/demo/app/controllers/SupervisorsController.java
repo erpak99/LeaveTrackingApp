@@ -53,10 +53,11 @@ public class SupervisorsController {
 		return ResponseEntity.ok( this.supervisorService.createOneSupervisor(supervisor));
 	}
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/{supervisorId}")
 	public void deleteOneSupervisor(@PathVariable int supervisorId) {
 		this.supervisorService.deleteOneSupervisor(supervisorId);
 	}
+
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)	
 	@ResponseStatus(HttpStatus.BAD_REQUEST)

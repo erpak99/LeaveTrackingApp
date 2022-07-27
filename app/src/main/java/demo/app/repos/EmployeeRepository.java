@@ -22,8 +22,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer>  {
 	
 	List<Employee> getByFirstNameStartsWith(String firstName);
 	
-	@Query("From Employee where email =: email and supervisor.supervisorId =: supervisorId")
-	List<Employee> getByEmailAndSupervisor(String email, int supervisorId);
+	@Query("FROM Employee WHERE email=:email and supervisor.supervisorId=:supervisorId")
+	Employee getByEmailAndSupervisor(String email, int supervisorId);
 
 	@Query("Select new demo.app.entities.dtos.EmployeeWithSupervisorDto(e.id, e.email, s.firstName, s.lastName) From Supervisor s Inner Join s.employees e")
 	List<EmployeeWithSupervisorDto> getEmployeeWithSupervisorDetails();

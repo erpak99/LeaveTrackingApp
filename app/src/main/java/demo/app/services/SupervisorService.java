@@ -3,6 +3,7 @@ package demo.app.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,10 +60,13 @@ public class SupervisorService {
 	}
 
 	public void deleteOneSupervisor(int supervisorId) {
+		try {
 		this.supervisorRepository.deleteById(supervisorId);
+	} catch (EmptyResultDataAccessException ex) {
+		System.out.println("Supervisor " +supervisorId+ " doesn't exist");
 	}
-	
-	
+}
+
 	
 	
 }

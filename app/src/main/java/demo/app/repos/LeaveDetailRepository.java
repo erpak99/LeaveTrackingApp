@@ -4,7 +4,9 @@ package demo.app.repos;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import demo.app.core.status.LeaveStatus;
 import demo.app.entities.LeaveDetail;
@@ -33,5 +35,32 @@ public interface LeaveDetailRepository extends JpaRepository<LeaveDetail, Intege
 
 	List<LeaveDetail> getByLeaveStatusAndEmployee_Supervisor_SupervisorId(LeaveStatus leaveStatus, int supervisorId);
 
+	List<LeaveDetail> getByEmployee_Supervisor_SupervisorId(int supervisorId);
+	
+	@Transactional
+	@Modifying
+	@Query("UPDATE LeaveDetail SET leaveStatus=:leaveStatus where leaveId=:leaveId")
+	Integer updateLeaveStatus(int leaveId, LeaveStatus leaveStatus);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 					
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +18,6 @@ import demo.app.core.status.LeaveStatus;
 import demo.app.entities.LeaveDetail;
 import demo.app.entities.dtos.LeaveDetailWithEmployeeDto;
 import demo.app.entities.dtos.LeaveDurationWithEmployeeDto;
-//import demo.app.requests.ApproveRejectRequest;
 import demo.app.services.LeaveDetailService;
 
 @RestController
@@ -59,6 +59,11 @@ public class LeaveDetailsController {
 
 	}
 	
+	@PutMapping("/{leaveId}")
+	public DataResult<LeaveDetail> updateOneLeaveDetail(@PathVariable int leaveId, @RequestBody LeaveDetail newLeaveDetail) {
+		return this.leaveDetailService.updateOneLeaveDetail(leaveId, newLeaveDetail);
+	}
+	
 	@GetMapping("/getallstartdatesasc")
 	public DataResult<List<LeaveDetail>> getAllSorted() {
 		return this.leaveDetailService.getAllSorted();
@@ -89,11 +94,33 @@ public class LeaveDetailsController {
 		return this.leaveDetailService.getByEmployee_Id(id);
 	}
 	
-	@GetMapping("/getleavesdetailsbysupervisorid")
+	@GetMapping("/getleavedetailsbystatusandsupervisorid")
 	public DataResult<List<LeaveDetail>> getByLeaveStatusAndEmployee_Supervisor_SupervisorId(@RequestParam LeaveStatus leaveStatus, @RequestParam int supervisorId) {
 		return this.leaveDetailService.getByLeaveStatusAndEmployee_Supervisor_SupervisorId(leaveStatus, supervisorId);
 	}
 	
+	@GetMapping("/getleavedetailsbysupervisorid") 
+	public DataResult<List<LeaveDetail>> getByEmployee_Supervisor_SupervisorId(@RequestParam int supervisorId) {
+		return this.leaveDetailService.getByEmployee_Supervisor_SupervisorId(supervisorId);
+	}
+	
+	/*
+	@GetMapping("/approveleavedetail")	//leave status update query
+	public DataResult<LeaveDetail> approveLeaveDetail(@RequestParam int leaveId) {
+		return this.leaveDetailService.approveLeaveDetail(leaveId);
+	}
+	
+	@GetMapping("/rejectleavedetail")	//leave status update query
+	public DataResult<LeaveDetail> rejectLeaveDetail(@RequestParam int leaveId) {
+		return this.leaveDetailService.rejectLeaveDetail(leaveId);
+	}
+	 	*/
+	
+	@PutMapping("/updateleavestatus/{leaveId}/{leaveStatus}")
+	public String updateLeaveStatus(@PathVariable int leaveId, @PathVariable LeaveStatus leaveStatus) {
+		return leaveDetailService.updateLeaveStatus(leaveId,leaveStatus) + " status of employee updated";
+	}
+													
 	
 }
 	

@@ -1,6 +1,7 @@
 package demo.app.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -34,6 +35,20 @@ public class LeaveDetailService {
 		leaveDetail.setLeaveStatus(LeaveStatus.PENDING);
 		this.leaveDetailRepository.save(leaveDetail);			
 		return new SuccessResult("Leave is added");
+	}
+	
+	public DataResult<LeaveDetail> updateOneLeaveDetail(int leaveId, LeaveDetail newLeaveDetail) {
+		Optional<LeaveDetail> leaveDetail = leaveDetailRepository.findById(leaveId);
+		if(leaveDetail.isPresent()) {
+			LeaveDetail foundLeaveDetail = leaveDetail.get();
+			foundLeaveDetail.setStartDate(newLeaveDetail.getStartDate());
+			foundLeaveDetail.setEndDate(newLeaveDetail.getEndDate());
+			foundLeaveDetail.setLeaveDuration(newLeaveDetail.getLeaveDuration());
+			foundLeaveDetail.setLeaveDescription(newLeaveDetail.getLeaveDescription());
+			leaveDetailRepository.save(foundLeaveDetail);
+			return new SuccessDataResult<LeaveDetail>(foundLeaveDetail, "Leave detail is updated");
+		} else 
+			return null;
 	}
 
 	public DataResult<LeaveDetail> getOneLeaveById(int leaveId) {
@@ -70,14 +85,45 @@ public class LeaveDetailService {
 	}
 	
 	public DataResult<List<LeaveDetail>> getByEmployee_Id(int id) {
-		return new SuccessDataResult<List<LeaveDetail>>(this.leaveDetailRepository.getByEmployee_Id(id),"All leaves by specific id");
+		return new SuccessDataResult<List<LeaveDetail>>(this.leaveDetailRepository.getByEmployee_Id(id),"All leaves by specific employee id");
 	}
 
 	public DataResult<List<LeaveDetail>> getByLeaveStatusAndEmployee_Supervisor_SupervisorId(LeaveStatus leaveStatus, int supervisorId) {
-		return new SuccessDataResult<List<LeaveDetail>>(this.leaveDetailRepository.getByLeaveStatusAndEmployee_Supervisor_SupervisorId(leaveStatus, supervisorId), "Leaves by specific supervisor id");
+		return new SuccessDataResult<List<LeaveDetail>>(this.leaveDetailRepository.getByLeaveStatusAndEmployee_Supervisor_SupervisorId(leaveStatus, supervisorId), "Leaves by specific status and supervisor id");
 	}
 																					
+	public DataResult<List<LeaveDetail>> getByEmployee_Supervisor_SupervisorId(int supervisorId) {
+		return new SuccessDataResult<List<LeaveDetail>>(this.leaveDetailRepository.getByEmployee_Supervisor_SupervisorId(supervisorId), "Leaves by specific supervisor id");
+	}
 
+	/*
+	public DataResult<LeaveDetail> approveLeaveDetail(int leaveId) {
+		LeaveDetail leaveDetail = leaveDetailRepository.findById(leaveId).orElseThrow(null);
+		if (leaveDetail.getLeaveStatus() == LeaveStatus.PENDING) {
+			leaveDetail.setLeaveStatus(LeaveStatus.APPROVE);
+		} else
+			return new ErrorDataResult<LeaveDetail>(this.leaveDetailRepository.findById(leaveId).orElseThrow(null),
+					"Leave was not in pending");
+		return new SuccessDataResult<LeaveDetail>(this.leaveDetailRepository.findById(leaveId).orElseThrow(null),
+				"Leave is approved");
+	}
+
+	public DataResult<LeaveDetail> rejectLeaveDetail(int leaveId) {
+		LeaveDetail leaveDetail = leaveDetailRepository.findById(leaveId).orElseThrow(null);
+		if (leaveDetail.getLeaveStatus() == LeaveStatus.PENDING) {
+			leaveDetail.setLeaveStatus(LeaveStatus.REJECT);
+		} else
+			return new ErrorDataResult<LeaveDetail>(this.leaveDetailRepository.findById(leaveId).orElseThrow(null),
+					"Leave was not in pending");
+		return new SuccessDataResult<LeaveDetail>(this.leaveDetailRepository.findById(leaveId).orElseThrow(null),
+				"Leave is rejected");
+	}
+		*/
+
+	public Integer updateLeaveStatus(int leaveId, LeaveStatus leaveStatus) {
+		return leaveDetailRepository.updateLeaveStatus(leaveId, leaveStatus);
+	}
+	
 	
 }
 

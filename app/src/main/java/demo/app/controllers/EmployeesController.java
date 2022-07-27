@@ -3,7 +3,6 @@ package demo.app.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -57,6 +56,11 @@ public class EmployeesController {
 		return ResponseEntity.ok(this.employeeService.createOneEmployee(employee));
 	}
 	
+	@PutMapping("/{id}")
+	public DataResult<Employee> updateOneEmployee(@PathVariable int id, @RequestBody Employee newEmployee) {
+		return this.employeeService.updateOneEmployee(id, newEmployee);
+	}				
+	
 	@ExceptionHandler(MethodArgumentNotValidException.class)	// validation hatalarini kontrol eder
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ErrorDataResult<Object> handleValidationException(MethodArgumentNotValidException exceptions) {
@@ -97,7 +101,7 @@ public class EmployeesController {
 
 
 	@GetMapping("/getbyemailandsupervisor")
-	public DataResult<List<Employee>> getByEmailAndSupervisor(@RequestParam String email, @RequestParam int supervisorId) {
+	public DataResult<Employee> getByEmailAndSupervisor(@RequestParam String email, @RequestParam int supervisorId) {
 		return this.employeeService.getByEmailAndSupervisor(email, supervisorId);
 	}	
 

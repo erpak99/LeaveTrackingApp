@@ -1,8 +1,10 @@
 package demo.app.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -62,11 +64,30 @@ public class EmployeeService {
 			this.employeeRepository.save(employee);
 			return new SuccessResult("Employee is added successfully");
 		}
-	}
+	}  
 
+	public DataResult<Employee> updateOneEmployee(int id, Employee newEmployee) {	
+		Optional<Employee> employee = employeeRepository.findById(id);
+		if(employee.isPresent()) {
+			Employee foundEmployee = employee.get();
+			foundEmployee.setFirstName(newEmployee.getFirstName());
+			foundEmployee.setLastName(newEmployee.getLastName());
+			foundEmployee.setEmail(newEmployee.getEmail());
+			foundEmployee.setPassword(newEmployee.getPassword());
+			foundEmployee.setPhoneNumber(newEmployee.getPhoneNumber());
+			employeeRepository.save(foundEmployee);
+			return new SuccessDataResult<Employee>(foundEmployee,"Employee is updated");
+		} else
+		
+		return null ;
+	}
 	
 	public void deleteOneEmployee(int id) {
-		this.employeeRepository.deleteById(id);
+		try { 
+			this.employeeRepository.deleteById(id);
+		} catch(EmptyResultDataAccessException e)	{
+			System.out.println("Employee " +id+" doesn't exist");
+		}
 	}
 	
 	public DataResult<Employee> getByEmail(String email) {
@@ -91,8 +112,8 @@ public class EmployeeService {
 		return new SuccessDataResult<List<Employee>>(this.employeeRepository.getByFirstNameStartsWith(firstName), "Employees by their starting words");		
 	}
 		
-	public DataResult<List<Employee>> getByEmailAndSupervisor(String email, int supervisorId) {
-		return new SuccessDataResult<List<Employee>>(this.employeeRepository.getByEmailAndSupervisor(email, supervisorId), "Employees by email and supervisor");
+	public DataResult<Employee> getByEmailAndSupervisor(String email, int supervisorId) {
+		return new SuccessDataResult<Employee>(this.employeeRepository.getByEmailAndSupervisor(email, supervisorId), "Employees by email and supervisor");
 	}
 	
 	public DataResult<List<Employee>> getAll(int pageNo, int pageSize) {
@@ -110,5 +131,6 @@ public class EmployeeService {
 	public DataResult<List<EmployeeWithSupervisorDto>> getEmployeeWithSupervisorDetails() {
 		return new SuccessDataResult<List<EmployeeWithSupervisorDto>>(this.employeeRepository.getEmployeeWithSupervisorDetails(), "Id and email of employees and info of supervisors");
 	}
+
 
 }
