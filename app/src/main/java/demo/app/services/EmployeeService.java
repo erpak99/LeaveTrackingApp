@@ -73,7 +73,8 @@ public class EmployeeService {
 			foundEmployee.setFirstName(newEmployee.getFirstName());
 			foundEmployee.setLastName(newEmployee.getLastName());
 			foundEmployee.setEmail(newEmployee.getEmail());
-			foundEmployee.setPassword(newEmployee.getPassword());
+			String newEncodedPassword = this.passwordEncoder.encode(newEmployee.getPassword());
+			foundEmployee.setPassword(newEncodedPassword);
 			foundEmployee.setPhoneNumber(newEmployee.getPhoneNumber());
 			employeeRepository.save(foundEmployee);
 			return new SuccessDataResult<Employee>(foundEmployee,"Employee is updated");

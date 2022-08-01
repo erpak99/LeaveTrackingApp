@@ -1,5 +1,6 @@
 package demo.app.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class LeaveDetailsController {
 	public DataResult<List<LeaveDetail>> getByStatus(@RequestParam LeaveStatus leaveStatus) {
 		return this.leaveDetailService.getByLeaveStatus(leaveStatus);
 	}
+										
+	@GetMapping("/getbystartdatecontains")
+	public DataResult<List<LeaveDetail>> getByStartDateContains(@RequestParam String date) {
+		return this.leaveDetailService.getByStartDateContains(date);
+	}
 	
 	@PostMapping("/create")
 	public Result createLeaveRequest(@RequestBody LeaveDetail leaveDetail) {
@@ -60,7 +66,8 @@ public class LeaveDetailsController {
 	}
 	
 	@PutMapping("/{leaveId}")
-	public DataResult<LeaveDetail> updateOneLeaveDetail(@PathVariable int leaveId, @RequestBody LeaveDetail newLeaveDetail) {
+	public DataResult<LeaveDetail> updateOneLeaveDetail(@PathVariable int leaveId,
+														@RequestBody LeaveDetail newLeaveDetail) {
 		return this.leaveDetailService.updateOneLeaveDetail(leaveId, newLeaveDetail);
 	}
 	
@@ -75,7 +82,8 @@ public class LeaveDetailsController {
 	}
 
 	@GetMapping("/getleavedetailsbydurationandemail")
-	public DataResult<List<LeaveDetail>> getByLeaveDurationAndEmployee_Email(@RequestParam float leaveDuration, @RequestParam String email) {
+	public DataResult<List<LeaveDetail>> getByLeaveDurationAndEmployee_Email(@RequestParam float leaveDuration,
+			@RequestParam String email) {
 		return this.leaveDetailService.getByLeaveDurationAndEmployee_Email(leaveDuration, email);
 	}
 
@@ -95,7 +103,8 @@ public class LeaveDetailsController {
 	}
 	
 	@GetMapping("/getleavedetailsbystatusandsupervisorid")
-	public DataResult<List<LeaveDetail>> getByLeaveStatusAndEmployee_Supervisor_SupervisorId(@RequestParam LeaveStatus leaveStatus, @RequestParam int supervisorId) {
+	public DataResult<List<LeaveDetail>> getByLeaveStatusAndEmployee_Supervisor_SupervisorId(
+			@RequestParam LeaveStatus leaveStatus, @RequestParam int supervisorId) {
 		return this.leaveDetailService.getByLeaveStatusAndEmployee_Supervisor_SupervisorId(leaveStatus, supervisorId);
 	}
 	
@@ -103,24 +112,46 @@ public class LeaveDetailsController {
 	public DataResult<List<LeaveDetail>> getByEmployee_Supervisor_SupervisorId(@RequestParam int supervisorId) {
 		return this.leaveDetailService.getByEmployee_Supervisor_SupervisorId(supervisorId);
 	}
-	
-	/*
-	@GetMapping("/approveleavedetail")	//leave status update query
-	public DataResult<LeaveDetail> approveLeaveDetail(@RequestParam int leaveId) {
-		return this.leaveDetailService.approveLeaveDetail(leaveId);
+																
+	@GetMapping("/findbystartdatebetween") 
+	public DataResult<List<LeaveDetail>> findByStartDateBetween(@RequestParam Date start, @RequestParam Date end) {
+		return this.leaveDetailService.findByStartDateBetween(start, end);
+	}
+
+	@GetMapping("/findbystartdategreaterthan")
+	public DataResult<List<LeaveDetail>> findByStartDateGreaterThan(@RequestParam Date startDate) {
+		return this.leaveDetailService.findByStartDateGreaterThan(startDate);
+	}
+
+	@GetMapping("/leavedurationgreaterthanbyid")
+	public DataResult<List<LeaveDetail>> findByLeaveDurationGreaterThanAndEmployee_Id(@RequestParam float leaveDuration,
+			@RequestParam int id) {
+		return this.leaveDetailService.findByLeaveDurationGreaterThanAndEmployee_Id(leaveDuration, id);
+	}
+
+	@GetMapping("/leavesbeforethedatebysupervisorid")
+	public DataResult<List<LeaveDetail>> findByStartDateLessThanAndEmployee_Supervisor_SupervisorId(
+			@RequestParam Date startDate, @RequestParam int supervisorId) {
+		return this.leaveDetailService.findByStartDateLessThanAndEmployee_Supervisor_SupervisorId(startDate,
+				supervisorId);
+	}
+
+	@GetMapping("/leavesbeforethedatebyidandstatus")
+	public DataResult<List<LeaveDetail>> getByLeaveStatusAndStartDateLessThanAndEmployee_Id(
+			@RequestParam LeaveStatus leaveStatus, @RequestParam Date startDate, @RequestParam int id) {
+		return this.leaveDetailService.getByLeaveStatusAndStartDateLessThanAndEmployee_Id(leaveStatus, startDate, id);
+	}
+
+	@PutMapping("/approveleave/{leaveId}")
+	public DataResult<LeaveDetail> approveLeave(@PathVariable int leaveId) {
+		return this.leaveDetailService.approveLeave(leaveId);
 	}
 	
-	@GetMapping("/rejectleavedetail")	//leave status update query
-	public DataResult<LeaveDetail> rejectLeaveDetail(@RequestParam int leaveId) {
-		return this.leaveDetailService.rejectLeaveDetail(leaveId);
+	@PutMapping("/rejectleave/{leaveId}")
+	public DataResult<LeaveDetail> rejectLeave(@PathVariable int leaveId) {
+		return this.leaveDetailService.rejectLeave(leaveId);
 	}
-	 	*/
 	
-	@PutMapping("/updateleavestatus/{leaveId}/{leaveStatus}")
-	public String updateLeaveStatus(@PathVariable int leaveId, @PathVariable LeaveStatus leaveStatus) {
-		return leaveDetailService.updateLeaveStatus(leaveId,leaveStatus) + " status of employee updated";
-	}
-													
 	
 }
 	

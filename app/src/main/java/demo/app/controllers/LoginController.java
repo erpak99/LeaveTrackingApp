@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import demo.app.entities.Employee;
 import demo.app.services.EmployeeService;
 
-@Controller
+@Controller 
 public class LoginController {
 	
 	@Autowired
@@ -25,6 +25,7 @@ public class LoginController {
 	public String welcomePage(ModelMap model, @RequestParam String email, @RequestParam String password) {
 		Employee employee = employeeService.getEmployeeByEmail(email);
 		
+
 		if(employee.getPassword().equals(password)) {
 			model.put("email",email);
 			return "welcome";
